@@ -46,7 +46,35 @@ function iniciarJuego() {
     console.log("Categoria: " + estado.categoriaActual);
     console.log("Palabra: " + estado.palabraActual);
 
+    dibujarMascara();
 }
+
+
+function dibujarMascara(){
+
+    const contenedor = document.getElementById("mascara-palabra");
+
+    contenedor.innerHTML = "";
+
+    const letras = estado.palabraActual.split("")
+
+    letras.forEach(function(letra){
+
+        const span = document.createElement("span");
+
+        if (estado.letrasUsadas.includes(letra)) {
+            span.textContent = letra;
+        } else {
+            span.textContent = "_";
+        }
+
+        contenedor.appendChild(span);
+
+    });
+
+}
+
+
 
 // Escuchar los click de los botones
 btnJugar.addEventListener("click", function() {
