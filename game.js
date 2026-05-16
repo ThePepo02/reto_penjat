@@ -51,6 +51,7 @@ function iniciarJuego() {
 
     dibujarMascara();
     generarTeclado();
+    dibujarAhorcado();
 }
 
 
@@ -122,6 +123,7 @@ function seleccionarLetra(letra) {
     }
 
     dibujarMascara();
+    dibujarAhorcado();
     comprobarFin();
 }
 
@@ -174,6 +176,19 @@ btnJugar.addEventListener("click", function () {
 });
 
 const btnReiniciar = document.getElementById("btn-reiniciar");
+
+function dibujarAhorcado(){
+
+    for (let i = 0; i < 6; i++){
+        const parte = document.getElementById("parte-" + i)
+        if (i < estado.errores){
+            parte.style.display = "block";
+        } else {
+            parte.style.display = "none";
+        }
+    }
+}
+
 
 btnReiniciar.addEventListener("click", function () {
 
