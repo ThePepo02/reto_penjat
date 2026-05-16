@@ -87,6 +87,7 @@ function generarTeclado(){
 
         const boton = document.createElement("button");
         boton.textContent = letra;
+        boton.dataset.letra = letra;
 
         // Cuando se pulse este botón, elecionamos esa letra
         boton.addEventListener("click", function() {
@@ -106,6 +107,9 @@ function seleccionarLetra(letra){
     // Añadimos la letra a las usadas
     estado.letrasUsadas.push(letra);
 
+    const boton = document.querySelector("[data-letra='" + letra + "']");
+    boton.disabled = true;
+
     if(estado.palabraActual.includes(letra)){
         console.log("Acierti! La letra " + letra + " está en la palabra");
     }else {
@@ -115,7 +119,6 @@ function seleccionarLetra(letra){
 
     dibujarMascara();
 }
-
 
 
 // Escuchar los click de los botones
