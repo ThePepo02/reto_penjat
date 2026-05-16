@@ -1,0 +1,7 @@
+.pantalla {
+    display: none;
+}
+
+.pantalla.activa {
+    display: block;
+}
