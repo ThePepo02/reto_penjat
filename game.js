@@ -18,8 +18,11 @@ let estado = {
     palabraActual: "",
     categoriaActual: "",
     letrasUsadas: [],
-    errores: 0
+    errores: 0,
+    tiempoSegundos: 0
 }
+
+let intervalo = null; // guardar el temporizador
 
 
 const btnJugar = document.getElementById("btn-jugar");
@@ -53,6 +56,7 @@ function iniciarJuego() {
     generarTeclado();
     dibujarAhorcado();
     guardarEstado();
+    iniciarTimer();
 }
 
 
@@ -140,7 +144,6 @@ function seleccionarLetra(letra) {
 }
 
 function comprobarFin() {
-
     const todasAdivinadas = estado.palabraActual.split("").every(function (letra) {
         return estado.letrasUsadas.includes(letra);
     });
@@ -155,10 +158,10 @@ function comprobarFin() {
         console.log("¡PERDISTE! La palabra era: " + estado.palabraActual);
         mostrarFin(false);
     }
-
 }
 
 function mostrarFin(ganado) {
+    pararTimer();
     const pantallaFin = document.getElementById("pantalla-fin")
     const finResultado = document.getElementById("fin-resultado");
 
@@ -193,6 +196,23 @@ function cargarEstado() {
     return JSON.parse(datos);
 }
 
+function iniciarTimer() {
+    // Nos asegura de que no hay otro timer corriendo
+    clearInterval(intervalo);
+
+    // Cada 1000ms (1 segundo) ejecutamos esto:
+    intervalo = setInterval(function() {
+        estado.tiempoSegundos++;
+        document.getElementById("display-tiempo").textContent = "Tiempo: " + estado.tiempoSegundos + "s";
+        guardarEstado();
+    }, 1000);
+}
+
+function pararTimer() {
+    clearInterval(intervalo);
+    intervalo = null; 
+}
+
 
 // EVENTOS
 
@@ -216,6 +236,7 @@ btnReiniciar.addEventListener("click", function () {
     estado.errores = 0;
     estado.palabraActual = "";
     estado.categoriaActual = "";
+    estado.tiempoSegundos = 0;
 
 
     // Limpiar el teclado y la mascara
@@ -236,6 +257,7 @@ const estadoGuardado = cargarEstado();
 if (estadoGuardado !== null) {
     //  Habia una partida guardada - la restauramos
     estado = estadoGuardado;
+    estado.tiempoSegundos = Number(estado.tiempoSegundos);
 
     //Mostramos la pantalla de juego directamente
     pantallaInicio.classList.remove("activa");
@@ -248,4 +270,5 @@ if (estadoGuardado !== null) {
     dibujarMascara();
     generarTeclado();
     dibujarAhorcado();
+    iniciarTimer();
 }
