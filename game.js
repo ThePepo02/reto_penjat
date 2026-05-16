@@ -22,13 +22,13 @@ let estado = {
 }
 
 
-
 const btnJugar = document.getElementById("btn-jugar");
 const inputNombre = document.getElementById("input-nombre");
 const pantallaInicio = document.getElementById("pantalla-inicio");
 const pantallaJuego = document.getElementById("pantalla-juego");
 const displayCategoria = document.getElementById("display-categoria")
 const displayErrores = document.getElementById("display-errores")
+const btnReiniciar = document.getElementById("btn-reiniciar");
 
 
 function iniciarJuego() {
@@ -52,6 +52,7 @@ function iniciarJuego() {
     dibujarMascara();
     generarTeclado();
     dibujarAhorcado();
+    guardarEstado();
 }
 
 
@@ -72,9 +73,7 @@ function dibujarMascara() {
         } else {
             span.textContent = "_";
         }
-
         contenedor.appendChild(span);
-
     });
 
 }
@@ -102,6 +101,18 @@ function generarTeclado() {
     });
 }
 
+function dibujarAhorcado() {
+
+    for (let i = 0; i < 6; i++) {
+        const parte = document.getElementById("parte-" + i)
+        if (i < estado.errores) {
+            parte.style.display = "block";
+        } else {
+            parte.style.display = "none";
+        }
+    }
+}
+
 function seleccionarLetra(letra) {
 
     if (estado.letrasUsadas.includes(letra)) {
@@ -124,6 +135,7 @@ function seleccionarLetra(letra) {
 
     dibujarMascara();
     dibujarAhorcado();
+    guardarEstado();
     comprobarFin();
 }
 
@@ -162,6 +174,28 @@ function mostrarFin(ganado) {
 
 
 
+// PARTE: localStorage
+
+function guardarEstado() {
+    // convertir el objeto estado a texto
+    localStorage.setItem("ahorcado_estado", JSON.stringify(estado));
+}
+
+function cargarEstado() {
+
+    //Leemos el texto guardado
+    const datos = localStorage.getItem("ahorcado_estado");
+
+    if (datos === null) {
+        return null;
+    }
+    // Convertimos el texto de vuelta a objeto y lo devolvemos
+    return JSON.parse(datos);
+}
+
+
+// EVENTOS
+
 // Escuchar los click de los botones
 btnJugar.addEventListener("click", function () {
     const nombre = inputNombre.value;
@@ -172,22 +206,7 @@ btnJugar.addEventListener("click", function () {
 
     pantallaInicio.classList.remove("activa");
     pantallaJuego.classList.add("activa");
-
 });
-
-const btnReiniciar = document.getElementById("btn-reiniciar");
-
-function dibujarAhorcado(){
-
-    for (let i = 0; i < 6; i++){
-        const parte = document.getElementById("parte-" + i)
-        if (i < estado.errores){
-            parte.style.display = "block";
-        } else {
-            parte.style.display = "none";
-        }
-    }
-}
 
 
 btnReiniciar.addEventListener("click", function () {
@@ -203,7 +222,30 @@ btnReiniciar.addEventListener("click", function () {
     document.getElementById("teclado").innerHTML = "";
     document.getElementById("mascara-palabra").innerHTML = "";
 
+    localStorage.removeItem("ahorcado_estado");
+
     // Volvemos a la pantalla de inicio
     document.getElementById("pantalla-fin").classList.remove("activa");
     pantallaInicio.classList.add("activa");
-})
+});
+
+
+// Arranque: Comprobar si hay partida guardada
+const estadoGuardado = cargarEstado();
+
+if (estadoGuardado !== null) {
+    //  Habia una partida guardada - la restauramos
+    estado = estadoGuardado;
+
+    //Mostramos la pantalla de juego directamente
+    pantallaInicio.classList.remove("activa");
+    pantallaJuego.classList.add("activa");
+
+
+    //Redibujamos todo con el estado guardado
+    displayCategoria.textContent = "Categoria: " + estado.categoriaActual;
+    displayErrores.textContent = "Errores: " + estado.errores + " / 6";
+    dibujarMascara();
+    generarTeclado();
+    dibujarAhorcado();
+}
