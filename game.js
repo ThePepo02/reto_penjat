@@ -47,6 +47,7 @@ function iniciarJuego() {
     console.log("Palabra: " + estado.palabraActual);
 
     dibujarMascara();
+    generarTeclado();
 }
 
 
@@ -72,6 +73,47 @@ function dibujarMascara(){
 
     });
 
+}
+
+function generarTeclado(){
+
+    const contenedor = document.getElementById("teclado");
+    contenedor.innerHTML = "";
+
+    //Le pasamaos el avecedario
+    const letras = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("");
+
+    letras.forEach(function(letra){
+
+        const boton = document.createElement("button");
+        boton.textContent = letra;
+
+        // Cuando se pulse este botón, elecionamos esa letra
+        boton.addEventListener("click", function() {
+            seleccionarLetra(letra);
+        });
+
+        contenedor.appendChild(boton)
+    });
+}
+
+function seleccionarLetra(letra){
+
+    if (estado.letrasUsadas.includes(letra)){
+        return;
+    }
+
+    // Añadimos la letra a las usadas
+    estado.letrasUsadas.push(letra);
+
+    if(estado.palabraActual.includes(letra)){
+        console.log("Acierti! La letra " + letra + " está en la palabra");
+    }else {
+        console.log("Error! La letra " + letra + " no está en la palabra");
+        estado.errores++;
+    }
+
+    dibujarMascara();
 }
 
 
