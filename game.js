@@ -28,6 +28,7 @@ const inputNombre = document.getElementById("input-nombre");
 const pantallaInicio = document.getElementById("pantalla-inicio");
 const pantallaJuego = document.getElementById("pantalla-juego");
 const displayCategoria = document.getElementById("display-categoria")
+const displayErrores = document.getElementById("display-errores")
 
 
 function iniciarJuego() {
@@ -42,9 +43,11 @@ function iniciarJuego() {
     estado.categoriaActual = categoria.nombre;
 
     displayCategoria.textContent = "Categoria: " + estado.categoriaActual;
+    displayErrores.textContent = "Errores: 0 / 6";
 
     console.log("Categoria: " + estado.categoriaActual);
     console.log("Palabra: " + estado.palabraActual);
+
 
     dibujarMascara();
     generarTeclado();
@@ -115,6 +118,7 @@ function seleccionarLetra(letra) {
     } else {
         console.log("Error! La letra " + letra + " no está en la palabra");
         estado.errores++;
+        displayErrores.textContent = "Errores: " + estado.errores + " / 6"
     }
 
     dibujarMascara();
