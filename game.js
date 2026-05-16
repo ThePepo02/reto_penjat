@@ -167,9 +167,12 @@ function mostrarFin(ganado) {
 
     if (ganado) {
         finResultado.textContent = "!Ganaste¡"
+        guardarEnRanking();
     } else {
         finResultado.textContent = "!Perdiste¡ Era: " + estado.palabraActual;
     }
+
+    mostrarRanking();
 
     pantallaJuego.classList.remove("activa");
     pantallaFin.classList.add("activa")
@@ -211,6 +214,61 @@ function iniciarTimer() {
 function pararTimer() {
     clearInterval(intervalo);
     intervalo = null; 
+}
+
+
+function guardarEnRanking() {
+    // Solo guardamos quien gano
+    const clave = "ranking_" + estado.palabraActual
+    const entrada = {
+        nombre: estado.nombreJugador,
+        tiempo: estado.tiempoSegundos,
+        errores: estado.errores
+    };
+
+    // Cargamos el ranking actual de esta palabra
+    const datos = localStorage.getItem(clave);
+    let ranking = datos ? JSON.parse(datos) : [];
+
+    // Añadimos la nueva entrada
+    ranking.push(entrada);
+
+    // Ordenamos: menos errores primero, empate menos tiempo
+    ranking.sort(function(a, b){
+        if (a.errores !== b.errores){
+            return a.errores - b.errores;
+        }
+        return a.tiempo - b.tiempo;
+    });
+
+    // Solo guardamos el Top 3
+    ranking = ranking.slice(0, 3);
+
+    localStorage.setItem(clave, JSON.stringify(ranking));
+}
+
+
+
+function mostrarRanking(){
+    const clave = "ranking_" + estado.palabraActual;
+    const datos = localStorage.getItem(clave);
+    const ranking = datos ? JSON.parse(datos) : [];
+
+
+    const contenedor = document.getElementById("fin-resultado");
+    let html = contenedor.innerHTML + "<br><br>🏆 TOP 3 - " + estado.palabraActual + "<br>";
+
+    if (ranking.length === 0){
+        html += "Sin registro aun";
+    } else {
+        const medallas = ["🥇", "🥈", "🥉"];
+        ranking.forEach(function(entrada, indice){
+            html += medallas[indice] + " " + entrada.nombre +
+            " -- " + entrada.errores + " errores, " + entrada.tiempo + "s<br>";
+        });
+    }
+
+    contenedor.innerHTML = html;
 }
 
 
