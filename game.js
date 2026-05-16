@@ -111,14 +111,50 @@ function seleccionarLetra(letra){
     boton.disabled = true;
 
     if(estado.palabraActual.includes(letra)){
-        console.log("Acierti! La letra " + letra + " está en la palabra");
+        console.log("Acierto! La letra " + letra + " está en la palabra");
     }else {
         console.log("Error! La letra " + letra + " no está en la palabra");
         estado.errores++;
     }
 
     dibujarMascara();
+    comprobarFin();
 }
+
+function comprobarFin(){
+
+    const todasAdivinadas = estado.palabraActual.split("").every(function(letra) {
+        return estado.letrasUsadas.includes(letra);
+    });
+
+    if (todasAdivinadas) {
+        console.log("!GANASTE¡")
+        mostrarFin(true);
+        return;
+    }
+
+    if (estado.errores >= 6) {
+        console.log("¡PERDISTE! La palabra era: " + estado.palabraActual);
+        mostrarFin(false);
+    }
+
+}
+
+function mostrarFin(ganado){
+    const pantallaFin = document.getElementById("pantalla-fin")
+    const finResultado = document.getElementById("fin-resultado");
+
+    if (ganado) {
+        finResultado.textContent = "!Ganaste¡"
+    } else {
+        finResultado.textContent = "!Perdiste¡ Era: " + estado.palabraActual;
+    }
+
+    pantallaJuego.classList.remove("activa");
+    pantallaFin.classList.add("activa")
+}
+
+
 
 
 // Escuchar los click de los botones
