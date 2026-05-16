@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Ahorcado</title>
+</head>
+<body>
+    <!-- Pantalla 1: El usuario escribe el nombre-->
+    <div id="pantalla-inicio">
+        <h1>El Ahorcado</h1>
+        <input type="text" id="input-nombre" placeholder="Tu nombre..." />
+        <button id="btn-jugar">¡Jugar!</button>
+    </div>
+
+    <!-- Pantalla 2: El juego en si -->
+     <div id="pantalla-juego">
+        <p id="display-categoria">Categoria: </p>
+        <p id="display-errores">Errores: 0 / 6</p>
+        <div id="mascara-palabra"></div>
+        <div id="teclado"></div>
+     </div>
+
+
+     <!-- Pantalla 3: Fin del juego -->
+      <div id="pantalla-fin">
+        <h2 id="fin-resultado"></h2>
+        <button id="btn-reiniciar">¡Volver a jugar!</button>
+      </div>
+    
+</body>
+</html>
