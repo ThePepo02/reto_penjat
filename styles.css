@@ -1,7 +1,302 @@
+/* ================================
+   VARIABLES — colores del juego
+   ================================ */
+:root {
+    --fondo:       #0f0e17;
+    --superficie:  #1a1830;
+    --superficie2: #252340;
+    --acento:      #f7b731;
+    --error:       #ff6b6b;
+    --exito:       #4ecdc4;
+    --texto:       #fffffe;
+    --texto-dim:   #a7a9be;
+    --borde:       rgba(247, 183, 49, 0.25);
+    --radio:       12px;
+}
+
+/* ================================
+   BASE
+   ================================ */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--fondo);
+    color: var(--texto);
+    font-family: 'Trebuchet MS', sans-serif;
+    min-height: 100vh;
+}
+
+/* ================================
+   SISTEMA DE PANTALLAS
+   ================================ */
 .pantalla {
     display: none;
+    padding: 2rem;
 }
 
 .pantalla.activa {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+/* ================================
+   PANTALLA DE INICIO
+   ================================ */
+#pantalla-inicio {
+    gap: 1.5rem;
+}
+
+#pantalla-inicio h1 {
+    font-size: 4rem;
+    color: var(--acento);
+    text-align: center;
+    letter-spacing: 0.05em;
+    text-shadow: 0 0 40px rgba(247, 183, 49, 0.4);
+}
+
+#pantalla-inicio p {
+    color: var(--texto-dim);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.campo-nombre {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#pantalla-inicio input {
+    padding: 0.8rem 1.2rem;
+    border-radius: var(--radio);
+    border: 2px solid var(--borde);
+    background: var(--superficie);
+    color: var(--texto);
+    font-size: 1rem;
+    width: 260px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+#pantalla-inicio input:focus {
+    border-color: var(--acento);
+}
+
+#pantalla-inicio input::placeholder {
+    color: var(--texto-dim);
+}
+
+#pantalla-inicio button {
+    padding: 0.8rem 1.8rem;
+    border-radius: var(--radio);
+    border: none;
+    background: var(--acento);
+    color: #0f0e17;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    box-shadow: 0 4px 20px rgba(247, 183, 49, 0.35);
+}
+
+#pantalla-inicio button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(247, 183, 49, 0.5);
+}
+
+/* ================================
+   PANTALLA DE JUEGO
+   ================================ */
+#pantalla-juego {
+    justify-content: flex-start;
+    padding: 1.5rem;
+    gap: 1rem;
+}
+
+/* Cabecera con categoría, errores y tiempo */
+#display-categoria,
+#display-errores,
+#display-tiempo {
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    padding: 0.5rem 1.2rem;
+    font-size: 0.9rem;
+    color: var(--texto-dim);
+}
+
+#display-categoria { color: var(--acento); }
+#display-errores   { color: var(--error);  }
+#display-tiempo    { color: var(--exito);  }
+
+/* Máscara de la palabra */
+#mascara-palabra {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    padding: 1.5rem 2rem;
+    width: 100%;
+    max-width: 600px;
+}
+
+#mascara-palabra span {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--texto);
+    min-width: 30px;
+    text-align: center;
+    border-bottom: 3px solid var(--acento);
+    padding-bottom: 4px;
+}
+
+/* Teclado */
+#teclado {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    justify-content: center;
+    max-width: 600px;
+}
+
+#teclado button {
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    border: 1.5px solid var(--borde);
+    background: var(--superficie2);
+    color: var(--texto);
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+#teclado button:hover:not(:disabled) {
+    background: var(--acento);
+    color: #0f0e17;
+    transform: scale(1.1);
+}
+
+#teclado button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* El ahorcado SVG */
+#svg-ahorcado line,
+#svg-ahorcado circle {
+    stroke: var(--error);
+}
+
+/* La horca siempre en gris */
+#svg-ahorcado .estructura {
+    stroke: var(--texto-dim);
+}
+
+/* El cuerpo del ahorcado en rojo */
+#svg-ahorcado .cuerpo {
+    stroke: var(--error);
+}
+
+/* ================================
+   PANTALLA DE FIN
+   ================================ */
+#pantalla-fin {
+    gap: 1.5rem;
+    text-align: center;
+}
+
+#fin-resultado {
+    font-size: 1.5rem;
+    line-height: 2;
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    padding: 2rem;
+    max-width: 500px;
+    width: 100%;
+}
+
+#btn-reiniciar {
+    padding: 0.8rem 2rem;
+    border-radius: var(--radio);
+    border: none;
+    background: var(--acento);
+    color: #0f0e17;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+#btn-reiniciar:hover {
+    opacity: 0.85;
+    transform: scale(1.05);
+}
+
+/* ================================
+   SVG AHORCADO
+   ================================ */
+#svg-ahorcado {
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    padding: 1rem;
+}
+
+/* ================================
+   PANTALLA DE JUEGO - LAYOUT
+   ================================ */
+#pantalla-juego {
+    justify-content: flex-start;
+    padding: 1.5rem;
+    gap: 1rem;
+}
+
+/* Cabecera horizontal con toda la info */
+.juego-header {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 900px;
+}
+
+/* Zona principal en dos columnas */
+.juego-main {
+    display: flex;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 900px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.col-ahorcado {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    justify-content: center;
+}
+
+.col-juego {
+    flex: 2;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }

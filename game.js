@@ -71,7 +71,7 @@ function dibujarMascara() {
     letras.forEach(function (letra) {
 
         const span = document.createElement("span");
-
+        // El usuario ya adivino esta letra?
         if (estado.letrasUsadas.includes(letra)) {
             span.textContent = letra;
         } else {
@@ -87,7 +87,7 @@ function generarTeclado() {
     const contenedor = document.getElementById("teclado");
     contenedor.innerHTML = "";
 
-    //Le pasamaos el avecedario
+   
     const letras = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("");
 
     letras.forEach(function (letra) {
@@ -95,6 +95,11 @@ function generarTeclado() {
         const boton = document.createElement("button");
         boton.textContent = letra;
         boton.dataset.letra = letra;
+
+        //Si reinicia se quedebloqueada
+        if (estado.letrasUsadas.includes(letra)) {
+            boton.disabled = true;
+        }
 
         // Cuando se pulse este botón, elecionamos esa letra
         boton.addEventListener("click", function () {
@@ -136,7 +141,7 @@ function seleccionarLetra(letra) {
         estado.errores++;
         displayErrores.textContent = "Errores: " + estado.errores + " / 6"
     }
-
+    //Actualiza el interfaz
     dibujarMascara();
     dibujarAhorcado();
     guardarEstado();
@@ -195,12 +200,15 @@ function cargarEstado() {
     if (datos === null) {
         return null;
     }
+
     // Convertimos el texto de vuelta a objeto y lo devolvemos
     return JSON.parse(datos);
 }
 
+
+// Timer 
 function iniciarTimer() {
-    // Nos asegura de que no hay otro timer corriendo
+    // Borra el timer
     clearInterval(intervalo);
 
     // Cada 1000ms (1 segundo) ejecutamos esto:
@@ -220,20 +228,22 @@ function pararTimer() {
 function guardarEnRanking() {
     // Solo guardamos quien gano
     const clave = "ranking_" + estado.palabraActual
-    const entrada = {
-        nombre: estado.nombreJugador,
-        tiempo: estado.tiempoSegundos,
-        errores: estado.errores
-    };
 
     // Cargamos el ranking actual de esta palabra
     const datos = localStorage.getItem(clave);
-    let ranking = datos ? JSON.parse(datos) : [];
+    let ranking = datos ? JSON.parse(datos) : []; //Si hay un rankin me lo carga y si no el array vacio
+
+    const entrada = {
+            nombre: estado.nombreJugador,
+            tiempo: estado.tiempoSegundos,
+            errores: estado.errores
+    };
 
     // Añadimos la nueva entrada
     ranking.push(entrada);
 
-    // Ordenamos: menos errores primero, empate menos tiempo
+    // Ordenamos: menos errores primero, empate menos tiempo 
+    // Usamos sor por que asi comparamos y decidimos el puesto
     ranking.sort(function(a, b){
         if (a.errores !== b.errores){
             return a.errores - b.errores;
@@ -241,7 +251,7 @@ function guardarEnRanking() {
         return a.tiempo - b.tiempo;
     });
 
-    // Solo guardamos el Top 3
+    // Espara tener una porcion y solo tomamos 3 posiciones
     ranking = ranking.slice(0, 3);
 
     localStorage.setItem(clave, JSON.stringify(ranking));
@@ -261,19 +271,18 @@ function mostrarRanking(){
     if (ranking.length === 0){
         html += "Sin registro aun";
     } else {
+        // Se le asiga una medalla segun la posicion del jugador 
         const medallas = ["🥇", "🥈", "🥉"];
         ranking.forEach(function(entrada, indice){
             html += medallas[indice] + " " + entrada.nombre +
             " -- " + entrada.errores + " errores, " + entrada.tiempo + "s<br>";
         });
     }
-
     contenedor.innerHTML = html;
 }
 
 
 // EVENTOS
-
 // Escuchar los click de los botones
 btnJugar.addEventListener("click", function () {
     const nombre = inputNombre.value;

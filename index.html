@@ -13,42 +13,55 @@
     <!-- Pantalla 1: El usuario escribe el nombre-->
     <div id="pantalla-inicio" class="pantalla activa">
         <h1>El Ahorcado</h1>
-        <input type="text" id="input-nombre" placeholder="Tu nombre..." />
-        <button id="btn-jugar">¡Jugar!</button>
+        <p>¡Adivina la palabra antes de que sea demasiado tarde!</p>
+        <div class="campo-nombre">
+            <input type="text" id="input-nombre" placeholder="Tu nombre..." />
+            <button id="btn-jugar">¡Jugar!</button>
+        </div>
     </div>
 
     <!-- Pantalla 2: El juego en si -->
     <div id="pantalla-juego" class="pantalla">
-        <p id="display-categoria">Categoria: </p>
-        <p id="display-errores">Errores: 0 / 6</p>
-        <div id="mascara-palabra"></div>
-        <div id="teclado"></div>
-        <p id="display-tiempo"></p>
 
+        <!-- Cabecera -->
+        <div class="juego-header">
+            <p id="display-categoria">Categoria: </p>
+            <p id="display-errores">Errores: 0 / 6</p>
+            <p id="display-tiempo"></p>
+        </div>
 
-        <!-- El dibujo del ahorcado -->
-        <svg id="svg-ahorcado" viewBox="0 0 200 220" width="200" height="220">
-            <!-- La horca (siempre visible) -->
-            <line x1="10" y1="210" x2="190" y2="210" stroke="black" stroke-width="4" />
-            <line x1="60" y1="210" x2="60" y2="10" stroke="black" stroke-width="4" />
-            <line x1="60" y1="10" x2="130" y2="10" stroke="black" stroke-width="4" />
-            <line x1="130" y1="10" x2="130" y2="40" stroke="black" stroke-width="4" />
+        <!-- Zona principal -->
+        <div class="juego-main">
 
-            <!-- Partes del cuerpo (ocultas por defecto) -->
-            <circle id="parte-0" cx="130" cy="55" r="15" stroke="black" stroke-width="4" fill="none"
-                style="display:none" />
-            <line id="parte-1" x1="130" y1="70" x2="130" y2="130" stroke="black" stroke-width="4"
-                style="display:none" />
-            <line id="parte-2" x1="130" y1="85" x2="105" y2="110" stroke="black" stroke-width="4"
-                style="display:none" />
-            <line id="parte-3" x1="130" y1="85" x2="155" y2="110" stroke="black" stroke-width="4"
-                style="display:none" />
-            <line id="parte-4" x1="130" y1="130" x2="105" y2="165" stroke="black" stroke-width="4"
-                style="display:none" />
-            <line id="parte-5" x1="130" y1="130" x2="155" y2="165" stroke="black" stroke-width="4"
-                style="display:none" />
-        </svg>
+            <!-- Columna izquierda: ahorcado -->
+            <div class="col-ahorcado">
+                <svg id="svg-ahorcado" viewBox="0 0 200 220" width="200" height="220">
+                    <line class="estructura" x1="10" y1="210" x2="190" y2="210" stroke-width="4" />
+                    <line class="estructura" x1="60" y1="210" x2="60" y2="10" stroke-width="4" />
+                    <line class="estructura" x1="60" y1="10" x2="130" y2="10" stroke-width="4" />
+                    <line class="estructura" x1="130" y1="10" x2="130" y2="40" stroke-width="4" />
+                    <circle class="cuerpo" id="parte-0" cx="130" cy="55" r="15" fill="none" stroke-width="4"
+                        style="display:none" />
+                    <line class="cuerpo" id="parte-1" x1="130" y1="70" x2="130" y2="130" stroke-width="4"
+                        style="display:none" />
+                    <line class="cuerpo" id="parte-2" x1="130" y1="85" x2="105" y2="110" stroke-width="4"
+                        style="display:none" />
+                    <line class="cuerpo" id="parte-3" x1="130" y1="85" x2="155" y2="110" stroke-width="4"
+                        style="display:none" />
+                    <line class="cuerpo" id="parte-4" x1="130" y1="130" x2="105" y2="165" stroke-width="4"
+                        style="display:none" />
+                    <line class="cuerpo" id="parte-5" x1="130" y1="130" x2="155" y2="165" stroke-width="4"
+                        style="display:none" />
+                </svg>
+            </div>
 
+            <!-- Columna derecha: palabra y teclado -->
+            <div class="col-juego">
+                <div id="mascara-palabra"></div>
+                <div id="teclado"></div>
+            </div>
+
+        </div>
     </div>
 
 
