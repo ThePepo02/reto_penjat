@@ -101,7 +101,7 @@ function generarTeclado() {
             boton.disabled = true;
         }
 
-        // Cuando se pulse este botón, elecionamos esa letra
+        // Cuando se pulse este botón, selecionamos esa letra
         boton.addEventListener("click", function () {
             seleccionarLetra(letra);
         });
@@ -141,6 +141,7 @@ function seleccionarLetra(letra) {
         estado.errores++;
         displayErrores.textContent = "Errores: " + estado.errores + " / 6"
     }
+    
     //Actualiza el interfaz
     dibujarMascara();
     dibujarAhorcado();
